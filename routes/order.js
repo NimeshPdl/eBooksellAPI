@@ -11,7 +11,7 @@ router.post('/addorder',(req,res,next)=>{
         billingaddress: req.body.billingaddress,
         billingnumber: req.body.billingnumber,
         price: req.body.price,
-        bookName: req.body.bookName,
+        bookname: req.body.bookname,
         ordernumber: req.body.ordernumber,
         dispatched: false
 

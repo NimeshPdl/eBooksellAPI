@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Cart = require('../models/cart');
+const cart = require('../models/cart');
 const router = new express.Router();
 const bodyParser = require('body-parser');
 var app = express();
@@ -22,14 +22,13 @@ router.get('/', function (req, res) {
         });
 });
 router.post('/addcart', (req, res, next) => {
-    console.log(req.body);
     cart.create({
-        bookId: req.body.userId,
-        userId: req.body.userId,
         price: req.body.price,
         bookname: req.body.bookname,
         detail: req.body.detail,
-        book_category: req.body.book_category
+        book_category: req.body.book_category,
+        bookId: req.body.bookId,
+        userId: req.body.userId,
     }).then((cart) => {
         console.log(req.body);
         res.json({ status: "Cart Added!" });
@@ -48,7 +47,7 @@ router.delete('/deletecart/:id', function (req, res) {
 router.post("/checkcart", function (req, res) {
     console.log(req.body.bookId + "is prodict id ");
     console.log(req.body.userId + "is user id ")
-    const pp = Cart.find({ bookId: req.body.productid, userid: req.body.userid }).countDocuments().then(function (count) {
+    const pp = cart.find({ bookId: req.body.bookId, userId: req.body.userId }).countDocuments().then(function (count) {
         if (count == 0) {
             res.send({ status: "addhere" });
         }

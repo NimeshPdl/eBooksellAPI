@@ -17,9 +17,11 @@ const cart = new mongoose.Schema({
         type:String,
         required:true
     },
-    image:{
-        type:String,
-        required:false
+    bookId:{
+        type:String
+    },
+    userId:{
+        type:String
     }
 });
 module.exports = mongoose.model('cart',cart);
