@@ -22,16 +22,11 @@ router.get('/', function (req, res) {
         });
 });
 router.post('/addcart', (req, res, next) => {
-    cart.create({
-        price: req.body.price,
-        bookname: req.body.bookname,
-        detail: req.body.detail,
-        book_category: req.body.book_category,
-        bookId: req.body.bookId,
-        userId: req.body.userId,
-    }).then((cart) => {
+    console.log(req.body)
+    cart.create(
+    req.body).then((cart) => {
         console.log(req.body);
-        res.json({ status: "Cart Added!" });
+        res.json({cart });
     }).catch(next);
 });
 
@@ -47,12 +42,14 @@ router.delete('/deletecart/:id', function (req, res) {
 router.post("/checkcart", function (req, res) {
     console.log(req.body.bookId + "is prodict id ");
     console.log(req.body.userId + "is user id ")
-    const pp = cart.find({ bookId: req.body.bookId, userId: req.body.userId }).countDocuments().then(function (count) {
+    // { bookId: req.body.bookId, userId: req.body.userId }
+    const pp = cart.find().countDocuments().then(function (count) {
         if (count == 0) {
             res.send({ status: "addhere" });
         }
         else {
             res.send({ status: "cantadd" });
+            
         }
     })
 })
