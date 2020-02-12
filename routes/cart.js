@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cart = require('../models/cart');
+const Cart = require('../models/cart');
 const router = new express.Router();
 const bodyParser = require('body-parser');
 var app = express();
@@ -8,7 +8,7 @@ const book = require('../models/book');
 const auth = require('../auth')
 
 router.get('/', function (req, res) {
-    cart.find()
+    Cart.find()
         .exec()
         .then(docs => {
             console.log(docs);
@@ -21,12 +21,13 @@ router.get('/', function (req, res) {
             });
         });
 });
-router.post('/addcart', (req, res, next) => {
-    console.log(req.body)
-    cart.create(
-    req.body).then((cart) => {
+router.post('/addcart',auth.verifyUser, (req, res, next) => {
+    Cart.create({
+        bookId : req.body.bookId,
+        userId : req.user._id
+    }).then((cart) => {
         console.log(req.body);
-        res.json({cart });
+        res.json(cart);
     }).catch(next);
 });
 
@@ -52,17 +53,31 @@ router.post("/checkcart", function (req, res) {
             
         }
     })
-})
+});
+
+router.get('/checkcart', function (req, res) {
+    Cart.find()
+        .exec()
+        .then(docs => {
+            console.log(docs);
+            res.status(200).json(docs);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
+});
 
 
-
-router.post("/checkcart90", function (req, res) {
+router.get("/checkcart90", function (req, res) {
     const pp = cart.find({ bookId: req.body.bookId, userId: req.body.userId }).countDocuments().then(function (count) {
         if (count == 0) {
-            res.send({ status: "addhere" });
+            res.send({ status: "Your List" });
         }
         else {
-            res.send({ status: "cantadd" });
+            res.send({ status: "Not Found" });
         }
     })
 })
