@@ -54,6 +54,7 @@ router.get('/me', auth.verifyUser, (req, res, next) => {
 });
 
 router.put('/me', auth.verifyUser, (req, res, next) => {
+    console.log(req.body);
     User.findByIdAndUpdate(req.user._id, { $set: req.body }, { new: true })
         .then((user) => {
             res.json({ _id: user._id, firstName: user.firstName, lastName: user.lastName, username: user.username, image: user.image });

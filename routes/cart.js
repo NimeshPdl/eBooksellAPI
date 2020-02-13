@@ -55,11 +55,11 @@ router.post("/checkcart", function (req, res) {
     })
 });
 
-router.get('/checkcart', function (req, res) {
-    Cart.find()
+router.get('/checkcart', require("../auth").verifyUser, function (req, res) {
+    Cart.find({userId:req.user._id}).populate("bookId")
         .exec()
         .then(docs => {
-            console.log(docs);
+            // console.log(docs);
             res.status(200).json(docs);
         })
         .catch(err => {
