@@ -14,7 +14,6 @@ router.post('/create',(req,res,next)=>{
         res.json( {status:"item created successfully",callback:callbacks});
         console.log(callbacks);
     }).catch(next);
-
 });
 
 router.get('/all',(req,res,next)=>{
